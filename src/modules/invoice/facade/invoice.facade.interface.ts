@@ -6,7 +6,11 @@ export interface GenerateInvoiceFacadeInputDto {
   name: string  
   document: string
   address: Address,
-  items: InvoiceItems[]
+  items: { 
+    id: string; 
+    name: string;
+    price: number; 
+  }[]
 }
 
 export interface FindInvoiceFacadeInputDto {
