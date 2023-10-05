@@ -5,8 +5,6 @@ import { InvoiceItemsModel } from "../repository/invoice-items.model"
 import InvoiceRepository from "../repository/invoice.repository"
 import GenerateInvoiceUseCase from "../usecase/generate-invoice/generate-invoice.usecase"
 import InvoiceFacade from "./invoice.facade"
-import InvoiceItems from "../domain/invoice-item.entity"
-import Id from "../../@shared/domain/value-object/id.value-object"
 import InvoiceFacadeFactory from "../factory/invoice.facade.factory"
 
 
@@ -31,12 +29,13 @@ describe("Invoice Facade tests", () => {
 
   it("should create a invoice", async () => {
 
-    const repository = new InvoiceRepository()
-    const generateUsecase = new GenerateInvoiceUseCase(repository)
-    const facade = new InvoiceFacade({
-      generateUsecase: generateUsecase,
-      findUsecase: undefined,
-    })
+    // const repository = new InvoiceRepository()
+    // const generateUsecase = new GenerateInvoiceUseCase(repository)
+    // const facade = new InvoiceFacade({
+    //   generateUsecase: generateUsecase,
+    //   findUsecase: undefined,
+    // })
+    const facade = InvoiceFacadeFactory.create();
 
     const input = {
       name: "Lucian",
