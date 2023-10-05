@@ -1,8 +1,19 @@
 import Address from "../../@shared/domain/value-object/address"
-import InvoiceItems from "../domain/invoice-item.entity"
 
 export interface GenerateInvoiceFacadeInputDto {
   id?: string
+  name: string  
+  document: string
+  address: Address,
+  items: { 
+    id: string; 
+    name: string;
+    price: number; 
+  }[]
+}
+
+export interface GenerateInvoiceFacadeOutputDto {
+  id: string
   name: string  
   document: string
   address: Address,
@@ -22,12 +33,16 @@ export interface FindInvoiceFacadeOutputDto {
   name: string
   document: string
   address: Address
-  items: []
+  items: { 
+    id: string; 
+    name: string;
+    price: number; 
+  }[]
   createdAt: Date
   updatedAt: Date
 }
 
 export default interface InvoiceFacadeInterface {
-  generate(input: GenerateInvoiceFacadeInputDto): Promise<void>;
+  generate(input: GenerateInvoiceFacadeInputDto): Promise<GenerateInvoiceFacadeOutputDto>;
   find(input: FindInvoiceFacadeInputDto): Promise<FindInvoiceFacadeOutputDto>;
 }

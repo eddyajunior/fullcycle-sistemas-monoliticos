@@ -40,7 +40,6 @@ describe("Invoice Facade tests", () => {
     })
 
     const input = {
-      id: "1",
       name: "Lucian",
       document: "1234-5678",
       address: new Address(
@@ -52,28 +51,21 @@ describe("Invoice Facade tests", () => {
         "88888-888",
       ),
       items: [
-        // new InvoiceItems({ id: new Id("1"), name: "Item 1", price: 12}),
-        // new InvoiceItems({ id: new Id("2"), name: "Item 2", price: 37.45})
         { id: "1", name: "Item 1", price: 12},
         { id: "2", name: "Item 2", price: 37.45}
       ]
     }
 
-    await facade.generate(input)
+    const result = await facade.generate(input)
 
-    // const invoice = await InvoiceModel.findOne({ 
-    //     where: { id: "1" }
-    //     //,
-    //     //include: ["items"]
-    // })
-
-    const invoice = await InvoiceModel.findOne({ where: { id: "1" } })
+    const invoice = await InvoiceModel.findOne({ 
+      where: { id: result.id },
+      include: ["items"]
+    })
 
     expect(invoice).toBeDefined()
-    // expect(invoice.id).toBe(input.id)
-    expect(invoice.name).toBe(input.name)    
-    expect(invoice.document).toBe(input.document)
-    expect(invoice.street).toBe(input.address.street)
+    expect(invoice.id).toBe(result.id);
+    expect(invoice.street).toBe(result.address.street);
   })
 
   it("should find a invoice", async () => {
@@ -81,8 +73,6 @@ describe("Invoice Facade tests", () => {
     const facade = InvoiceFacadeFactory.create()
 
     const input = {
-      // id: "1",
-      id: "",
       name: "Lucian",
       document: "1234-5678",
       address: new Address(
@@ -94,19 +84,17 @@ describe("Invoice Facade tests", () => {
         "88888-888",
       ),
       items: [
-        // new InvoiceItems({ id: new Id("1"), name: "Item 1", price: 12}),
-        // new InvoiceItems({ id: new Id("2"), name: "Item 2", price: 37.45})
-        { id: "", name: "Item 1", price: 12},
-        { id: "", name: "Item 2", price: 37.45}
+        { id: "1", name: "Item 1", price: 12},
+        { id: "2", name: "Item 2", price: 37.45}
       ]
     }
 
-    await facade.generate(input)
+    const result = await facade.generate(input)
 
-    const client = await facade.find({ id: "1" })
+    const client = await facade.find({ id: result.id })
 
     expect(client).toBeDefined()
-    // expect(client.id).toBe(input.id)
+    expect(client.id).toBe(result.id)
     expect(client.name).toBe(input.name)
     expect(client.document).toBe(input.document)
     expect(client.address.street).toBe(input.address.street)

@@ -16,22 +16,22 @@ export class InvoiceModel extends Model {
   @Column({ allowNull: false })
   document: string
 
-  @Column({ allowNull: true })
+  @Column({ allowNull: false })
   street: string
 
-  @Column({ allowNull: true })
+  @Column({ allowNull: false })
   number: string
 
   @Column({ allowNull: true })
   complement: string
 
-  @Column({ allowNull: true })
+  @Column({ allowNull: false })
   city: string
 
-  @Column({ allowNull: true })
+  @Column({ allowNull: false })
   state: string
 
-  @Column({ allowNull: true })
+  @Column({ allowNull: false })
   zipcode: string
 
   @HasMany(() => InvoiceItemsModel)
