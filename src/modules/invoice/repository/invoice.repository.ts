@@ -22,7 +22,7 @@ export default class InvoiceRepository implements InvoiceGateway {
             state: entity.address.state,
             zipcode: entity.address.zipCode,
             items: entity.items.map((item) => ({
-                id: new Id(),
+                id: new Id().id,
                 name: item.name,
                 price: item.price,
                 createdAt: item.createdAt,

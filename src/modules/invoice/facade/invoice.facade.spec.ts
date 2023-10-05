@@ -40,8 +40,7 @@ describe("Invoice Facade tests", () => {
     })
 
     const input = {
-      // id: "1",
-      id: "",
+      id: "1",
       name: "Lucian",
       document: "1234-5678",
       address: new Address(
@@ -55,17 +54,20 @@ describe("Invoice Facade tests", () => {
       items: [
         // new InvoiceItems({ id: new Id("1"), name: "Item 1", price: 12}),
         // new InvoiceItems({ id: new Id("2"), name: "Item 2", price: 37.45})
-        { id: "", name: "Item 1", price: 12},
-        { id: "", name: "Item 2", price: 37.45}
+        { id: "1", name: "Item 1", price: 12},
+        { id: "2", name: "Item 2", price: 37.45}
       ]
     }
 
     await facade.generate(input)
 
-    const invoice = await InvoiceModel.findOne({ 
-        where: { id: "1" },
-        include: ["items"]
-    })
+    // const invoice = await InvoiceModel.findOne({ 
+    //     where: { id: "1" }
+    //     //,
+    //     //include: ["items"]
+    // })
+
+    const invoice = await InvoiceModel.findOne({ where: { id: "1" } })
 
     expect(invoice).toBeDefined()
     // expect(invoice.id).toBe(input.id)
