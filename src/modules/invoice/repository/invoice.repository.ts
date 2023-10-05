@@ -10,7 +10,7 @@ export default class InvoiceRepository implements InvoiceGateway {
     
     async generate(entity: Invoice): Promise<void> {
         
-        await InvoiceModel.create(
+        const result = await InvoiceModel.create(
             {
             id: entity.id.id,
             name: entity.name,

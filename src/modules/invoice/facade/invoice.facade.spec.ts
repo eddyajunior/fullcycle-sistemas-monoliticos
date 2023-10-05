@@ -11,7 +11,6 @@ import InvoiceFacadeFactory from "../factory/invoice.facade.factory"
 
 
 describe("Invoice Facade tests", () => {
-
   let sequelize: Sequelize
 
   beforeEach(async () => {
