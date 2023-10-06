@@ -12,6 +12,7 @@ import Order from "../../domain/order.entity";
 import Product from "../../domain/product.entity";
 import CheckoutGateway from "../../gateway/checkout.gateway";
 import { PlaceOrderInputDto, PlaceOrderOutputDto } from "./place-order.dto";
+import Address from '../../../@shared/domain/value-object/address';
 
 export default class PlaceOrderUseCase implements UseCaseInterface {
     private _clientFacade: ClientAdmFacadeInterface;
@@ -51,7 +52,15 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
             id: new Id(client.id),
             name: client.name,
             email: client.email,
-            address: client.address
+            document: client.document,
+            address: new Address(
+                client.street,
+                client.number,
+                client.complement,
+                client.city,
+                client.state,
+                client.zipCode
+            )
         })
 
         const order = new Order({
@@ -67,9 +76,14 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
 
         const invoice = payment.status === "approved" ?
             await this._invoiceFacade.generate({
-                name: client.name,
-                document: client.document,
-                address: client.address,
+                name: myClient.name,
+                document: myClient.document,
+                street: myClient.address.street,
+                number: myClient.address.number,
+                complement: myClient.address.complement,
+                city: myClient.address.city,
+                state: myClient.address.state,
+                zipCode: myClient.address.zipCode,
                 items: products.map((p) => {
                     return {
                         id: p.id.id,

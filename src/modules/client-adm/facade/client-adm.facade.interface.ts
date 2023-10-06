@@ -20,6 +20,12 @@ export interface FindClientFacadeOutputDto {
   address: Address
   createdAt: Date
   updatedAt: Date
+  street: string
+  number: string 
+  complement: string 
+  city: string 
+  state: string 
+  zipCode: string 
 }
 
 export default interface ClientAdmFacadeInterface {

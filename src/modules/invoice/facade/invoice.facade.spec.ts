@@ -2,9 +2,6 @@ import { Sequelize } from "sequelize-typescript"
 import Address from "../../@shared/domain/value-object/address"
 import { InvoiceModel } from "../repository/invoice.model"
 import { InvoiceItemsModel } from "../repository/invoice-items.model"
-import InvoiceRepository from "../repository/invoice.repository"
-import GenerateInvoiceUseCase from "../usecase/generate-invoice/generate-invoice.usecase"
-import InvoiceFacade from "./invoice.facade"
 import InvoiceFacadeFactory from "../factory/invoice.facade.factory"
 
 
@@ -28,26 +25,17 @@ describe("Invoice Facade tests", () => {
   })
 
   it("should create a invoice", async () => {
-
-    // const repository = new InvoiceRepository()
-    // const generateUsecase = new GenerateInvoiceUseCase(repository)
-    // const facade = new InvoiceFacade({
-    //   generateUsecase: generateUsecase,
-    //   findUsecase: undefined,
-    // })
     const facade = InvoiceFacadeFactory.create();
 
     const input = {
       name: "Lucian",
       document: "1234-5678",
-      address: new Address(
-        "Rua 123",
-        "99",
-        "Casa Verde",
-        "Criciúma",
-        "SC",
-        "88888-888",
-      ),
+      street: "Rua 123",
+      number: "99",
+      complement: "Casa Verde",
+      city: "Criciúma",
+      state: "SC",
+      zipCode: "88888-888",
       items: [
         { id: "1", name: "Item 1", price: 12},
         { id: "2", name: "Item 2", price: 37.45}
@@ -62,8 +50,15 @@ describe("Invoice Facade tests", () => {
     })
 
     expect(invoice).toBeDefined()
-    expect(invoice.id).toBe(result.id);
-    expect(invoice.street).toBe(result.address.street);
+    expect(invoice.id).toBe(result.id)
+    expect(invoice.name).toBe(result.name)
+    expect(invoice.document).toBe(result.document)
+    expect(invoice.street).toBe(result.street)
+    expect(invoice.number).toBe(result.number)
+    expect(invoice.complement).toBe(result.complement)
+    expect(invoice.city).toBe(result.city)
+    expect(invoice.state).toBe(result.state)
+    expect(invoice.zipcode).toBe(result.zipCode)
   })
 
   it("should find a invoice", async () => {
@@ -73,14 +68,12 @@ describe("Invoice Facade tests", () => {
     const input = {
       name: "Lucian",
       document: "1234-5678",
-      address: new Address(
-        "Rua 123",
-        "99",
-        "Casa Verde",
-        "Criciúma",
-        "SC",
-        "88888-888",
-      ),
+      street: "Rua 123",
+      number: "99",
+      complement: "Casa Verde",
+      city: "Criciúma",
+      state: "SC",
+      zipCode: "88888-888",
       items: [
         { id: "1", name: "Item 1", price: 12},
         { id: "2", name: "Item 2", price: 37.45}
@@ -89,17 +82,17 @@ describe("Invoice Facade tests", () => {
 
     const result = await facade.generate(input)
 
-    const client = await facade.find({ id: result.id })
+    const invoice = await facade.find({ id: result.id })
 
-    expect(client).toBeDefined()
-    expect(client.id).toBe(result.id)
-    expect(client.name).toBe(input.name)
-    expect(client.document).toBe(input.document)
-    expect(client.address.street).toBe(input.address.street)
-    expect(client.address.number).toBe(input.address.number)
-    expect(client.address.complement).toBe(input.address.complement)
-    expect(client.address.city).toBe(input.address.city)
-    expect(client.address.state).toBe(input.address.state)
-    expect(client.address.zipCode).toBe(input.address.zipCode)
+    expect(invoice).toBeDefined()
+    expect(invoice.id).toBe(result.id)
+    expect(invoice.name).toBe(result.name)
+    expect(invoice.document).toBe(result.document)
+    expect(invoice.address.street).toBe(result.street)
+    expect(invoice.address.number).toBe(result.number)
+    expect(invoice.address.complement).toBe(result.complement)
+    expect(invoice.address.city).toBe(result.city)
+    expect(invoice.address.state).toBe(result.state)
+    expect(invoice.address.zipCode).toBe(result.zipCode)
   })
 })

@@ -8,33 +8,43 @@ import { InvoiceModel } from "./invoice.model";
 
 export default class InvoiceRepository implements InvoiceGateway {
     
-    async generate(entity: Invoice): Promise<void> {
+    async generate(invoice: Invoice): Promise<Invoice> {
         
-        const result = await InvoiceModel.create(
+        await InvoiceModel.create(
             {
-            id: entity.id.id,
-            name: entity.name,
-            document: entity.document,
-            street: entity.address.street,
-            number: entity.address.number,
-            complement: entity.address.complement,
-            city: entity.address.city,
-            state: entity.address.state,
-            zipcode: entity.address.zipCode,
-            items: entity.items.map((item) => ({
-                id: new Id().id,
+            id: invoice.id.id,
+            name: invoice.name,
+            document: invoice.document,
+            street: invoice.address.street,
+            number: invoice.address.number,
+            complement: invoice.address.complement,
+            city: invoice.address.city,
+            state: invoice.address.state,
+            zipcode: invoice.address.zipCode,
+            items: invoice.items.map((item) => ({
+                id: item.id.id,
                 name: item.name,
                 price: item.price,
                 createdAt: item.createdAt,
                 updatedAt: item.updatedAt
             })),
-            createdAt: entity.createdAt,
-            updatedAt: entity.updatedAt
+            createdAt: invoice.createdAt,
+            updatedAt: invoice.updatedAt
             },
             {
                 include: [{ model: InvoiceItemsModel }]
             }
         )
+
+        return new Invoice({
+            id: invoice.id, 
+            name: invoice.name, 
+            document: invoice.document, 
+            address: invoice.address, 
+            items: invoice.items, 
+            createdAt: invoice.createdAt, 
+            updatedAt: invoice.updatedAt
+        });
     }
     
     async find(id: string): Promise<Invoice> {
@@ -66,7 +76,5 @@ export default class InvoiceRepository implements InvoiceGateway {
             createdAt: invoice.createdAt,
             updatedAt: invoice.createdAt
         })
-
     }
-
 }
